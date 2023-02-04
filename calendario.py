@@ -18,16 +18,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if "Quando sair o anime" in message.content:
-        anime = message.content.split("Quando sair o anime")[1].strip()
-        if anime in anime_schedule:
-            response = f"@{message.author.mention} Novo episódio de {anime} sairá {anime_schedule[anime]}."
-        else:
-            response = "Desculpe @{message.author.mention}, não tenho informações sobre esse anime."
-        await message.channel.send(response)
-
-    if "Que horas sair" in message.content:
-        anime = message.content.split("Que horas sair")[1].strip()
+    message_lower = message.content.lower()
+    if "quando sair o anime" in message_lower or "que horas sair" in message_lower:
+        anime = message.content.split("quando sair o anime")[1].strip() if "quando sair o anime" in message_lower else message.content.split("que horas sair")[1].strip()
+        anime = anime.strip()
         if anime in anime_schedule:
             response = f"@{message.author.mention} Novo episódio de {anime} sairá {anime_schedule[anime]}."
         else:
