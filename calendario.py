@@ -19,13 +19,14 @@ async def on_message(message):
         return
 
     message_lower = message.content.lower()
-    if "quando sair o anime" in message_lower or "que horas sair" in message_lower:
-        anime = message.content.split("quando sair o anime")[1].strip() if "quando sair o anime" in message_lower else message.content.split("que horas sair")[1].strip()
-        anime = anime.strip()
-        if anime in anime_schedule:
-            response = f"@{message.author.mention} Novo episódio de {anime} sairá {anime_schedule[anime]}."
-        else:
-            response = "Desculpe @{message.author.mention}, não tenho informações sobre esse anime."
-        await message.channel.send(response)
+    if not any(keyword in message_lower for keyword in ["quando sair o anime", "que horas sair"]):
+        return
+
+    anime = message.content.split("quando sair o anime")[1].strip() if "quando sair o anime" in message_lower else message.content.split("que horas sair")[1].strip()
+    anime = anime.strip()
+    response = f"Desculpe @{message.author.mention}, não tenho informações sobre o anime '{anime}'"
+    if anime in anime_schedule:
+        response = f"@{message.author.mention} Novo episódio de {anime} sairá {anime_schedule[anime]}."
+    await message.channel.send(response)
 
 client.run('YOUR TOKEN')
